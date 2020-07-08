@@ -12,6 +12,7 @@ import {
     KeyboardAvoidingView
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { User, Users } from '../src/api-handler/User';
 import Loader from './Components/Loader';
 
 const LoginScreen = props => {
@@ -32,9 +33,23 @@ const LoginScreen = props => {
         }
         setLoading(true);
         var dataToSend = { username: username, password: userPassword };
-        /**TODO
-         * Call api for login
-         */
+        
+        Users.login(dataToSend)
+            .then(response => response)
+            .then(responseJson => {
+                setLoading(false);
+                console.log(responseJson);
+                if (responseJson.data.status === 'active') {
+                    AsyncStorage.setItem('user_id', responseJson.data.id);
+                    props.navigation.navigate('DrawerNavigationRoutes');
+                } else {
+                    setErrorText('Verifica el email y contraseña');
+                }
+            })
+            .catch(error => {
+                setLoading(false);
+                alert(error.response.data.message);
+            });
     };
 
     return (

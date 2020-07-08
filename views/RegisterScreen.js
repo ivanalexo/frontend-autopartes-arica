@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { Users } from '../src/api-handler/User';
 //Import all required component
 import {
   StyleSheet,
@@ -26,21 +26,21 @@ const RegisterScreen = props => {
   const handleSubmitButton = () => {
     setErrortext('');
     if (!userName) {
-      alert('Please fill Name');
+      alert('Ingrese su nombre');
       return;
     }
 
     if(!username) {
-        alert('Llene su nombre de usuario');
+        alert('Ingrese su nombre de usuario');
         return;
     }
 
     if (!userEmail) {
-      alert('Please fill Email');
+      alert('Ingrese su email');
       return;
     }
     if (!userPassword) {
-      alert('Please fill password');
+      alert('Ingrese su contraseña');
       return;
     }
     //Show Loader
@@ -51,11 +51,23 @@ const RegisterScreen = props => {
       email: userEmail,
       password: userPassword
     };
-    /**
-     * TODO
-     * call api register
-     */
-
+    Users.register(dataToSend)
+      .then(response => response)
+      .then(responseJson => {
+        setLoading(false);
+        console.log(responseJson.data)
+        if (responseJson.data.status == 1) {
+          setIsRegistraionSuccess(true);
+        } else {
+          console.log(responseJson)
+          setErrortext('No se pudo registrar el usuario');
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        alert(error.response.data.message)
+        console.log(error.response);
+      });
   };
   if (isRegistraionSuccess) {
     return (
@@ -69,12 +81,12 @@ const RegisterScreen = props => {
           source={require('../assets/images/success.png')}
           style={{ height: 150, resizeMode: 'contain', alignSelf: 'center' }}
         />
-        <Text style={styles.successTextStyle}>Registration Successful.</Text>
+        <Text style={styles.successTextStyle}>Registro exitoso</Text>
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
           onPress={() => props.navigation.navigate('LoginScreen')}>
-          <Text style={styles.buttonTextStyle}>Login Now</Text>
+          <Text style={styles.buttonTextStyle}>Iniciar sesión</Text>
         </TouchableOpacity>
       </View>
     );
