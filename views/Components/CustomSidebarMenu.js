@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 //Import all required component
 import { View, StyleSheet, Text, Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Users } from '../../src/api-handler/User';
 
 const CustomSidebarMenu = props => {
+  const [userInfo, setUserInfo] = useState();
   let items = [
     {
       navOptionName: 'Home Screen',
@@ -24,21 +26,20 @@ const CustomSidebarMenu = props => {
     if (screenToNavigate == 'logout') {
       props.navigation.toggleDrawer();
       Alert.alert(
-        'Logout',
-        'Are you sure? You want to logout?',
+        'Cerrar sesión',
+        '¿Está seguro que quiere cerrar sesión?',
         [
           {
-            text: 'Cancel',
+            text: 'Cancelar',
             onPress: () => {
               return null;
             },
           },
           {
-            text: 'Confirm',
+            text: 'Confirmar',
             onPress: () => {
               AsyncStorage.clear();
               props.navigation.navigate('Auth');
-              console.log('logout');
             },
           },
         ],
@@ -50,15 +51,33 @@ const CustomSidebarMenu = props => {
       props.navigation.navigate(screenToNavigate);
     }
   };
+
+  useEffect(() => {
+    //let data = await AsyncStorage.getItem('userInfo')//.then(value => value);
+   // const val = await AsyncStorage.multiGet(['id', 'tkn']);
+   AsyncStorage.getItem('userInfo').then(value => {
+     let dataParse = JSON.parse(value);
+     Users.getUserById(dataParse.id, dataParse.token)
+       .then(response => {
+         const user = response.data
+         setUserInfo({
+           name: user.name,
+           username: user.username
+         });
+       })
+       .catch(error => console.log(error.response));
+   });
+  },[]);
+
   return (
     <View style={stylesSidebar.sideMenuContainer}>
       <View style={stylesSidebar.profileHeader}>
         <View style={stylesSidebar.profileHeaderPicCircle}>
           <Text style={{ fontSize: 25, color: '#307ecc' }}>
-            {'About React'.charAt(0)}
+            {userInfo.name.charAt(0)}
           </Text>
         </View>
-        <Text style={stylesSidebar.profileHeaderText}>AboutReact</Text>
+        <Text style={stylesSidebar.profileHeaderText}>{userInfo.name}</Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />
       <View style={{ width: '100%', flex: 1 }}>

@@ -40,8 +40,15 @@ const LoginScreen = props => {
                 setLoading(false);
                 console.log(responseJson);
                 if (responseJson.data.status === 'active') {
-                    AsyncStorage.setItem('user_id', responseJson.data.id);
-                    props.navigation.navigate('DrawerNavigationRoutes');
+                    const token = responseJson.data.accessToken
+                    const data = {
+                        id: responseJson.data.id,
+                        token: token
+                    }
+                    AsyncStorage.setItem('userInfo', JSON.stringify(data));
+                    props.navigation.navigate('DrawerNavigationRoutes', {
+                        otherParams: token
+                    });
                 } else {
                     setErrorText('Verifica el email y contraseña');
                 }

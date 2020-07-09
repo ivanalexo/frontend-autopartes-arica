@@ -8,7 +8,7 @@ import SettingsScreen from './drawerScreens/SettingsScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import NavigationDrawerHeader from './Components/NavigationDrawerHeader';
 
-const FirstActivity_StackNavigator = createDrawerNavigator({
+const FirstActivity_StackNavigator = createStackNavigator({
     First: {
         screen: HomeScreen,
         navigationOptions: ({ navigation }) => ({
@@ -41,7 +41,7 @@ const DrawerNavigationRoutes = createDrawerNavigator({
         screen: FirstActivity_StackNavigator,
         navigationOptions: {
             drawerLabel: 'Home Screen'
-        }
+        },
     },
     SettingsScreen: {
         screen: SecondActivity_StackNavigator,

@@ -28,6 +28,17 @@ export const Users = {
         return await axios.post(`${auth_endpoint}/signin`, body, {
             headers
         });
+    },
+    getUserById: async (id, token) => {
+        /*const headers = {
+            Accept: 'application/json',
+            'x-access-token': token
+        }*/
+        return await axios.get(`${user_endpoints}/${id}`, {
+            headers: {
+                'x-access-token': token,
+                Accept: 'application/json'
+            }
+        });
     }
-    
 }

@@ -9,10 +9,12 @@ const SplashScreen = props => {
     useEffect(() => {
         setTimeout(() => {
             setAnimating(false);
-            AsyncStorage.getItem('user_id').then(value => 
+            AsyncStorage.getItem('userInfo').then(value =>
+                {
+                const data = JSON.parse(value);
                 props.navigation.navigate(
-                    value === null ? 'Auth' : 'DrawerNavigationRoutes'
-                ));
+                    data === null ? 'Auth' : 'DrawerNavigationRoutes'
+                )});
         }, 5000);
     }, []);
 
