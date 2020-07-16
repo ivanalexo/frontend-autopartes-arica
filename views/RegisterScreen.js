@@ -55,18 +55,15 @@ const RegisterScreen = props => {
       .then(response => response)
       .then(responseJson => {
         setLoading(false);
-        console.log(responseJson.data)
         if (responseJson.data.status == 1) {
           setIsRegistraionSuccess(true);
         } else {
-          console.log(responseJson)
           setErrortext('No se pudo registrar el usuario');
         }
       })
       .catch(error => {
         setLoading(false);
-        alert(error.response.data.message)
-        console.log(error.response);
+        alert(error.response.data.message);
       });
   };
   if (isRegistraionSuccess) {

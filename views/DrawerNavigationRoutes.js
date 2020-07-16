@@ -2,11 +2,14 @@ import React from 'react';
 
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import HomeScreen from './drawerScreens/HomeScreen';
+//import TabNavigationButtons from './drawerScreens/TabNavigation';
 import SettingsScreen from './drawerScreens/SettingsScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import NavigationDrawerHeader from './Components/NavigationDrawerHeader';
+import Icon from 'react-native-ionicons';
 
 const FirstActivity_StackNavigator = createStackNavigator({
     First: {
@@ -36,6 +39,45 @@ const SecondActivity_StackNavigator = createStackNavigator({
     }
 });
 
+
+const TabNavigationButtons = createBottomTabNavigator({
+    HomeScreen: {
+        screen: FirstActivity_StackNavigator,
+        navigationOptions: {
+            tabBarLabel: 'Home',
+            tabBarIcon: ({tintColor}) => 
+                <Icon name="home" color={tintColor}  />
+            
+        }
+    },
+    SettingsScreen: {
+        screen: SecondActivity_StackNavigator,
+        navigationOptions: {
+            title: 'Settings',
+            tabBarLabel: 'Settings',
+            tabBarIcon: ({tintColor}) => 
+                <Icon name="person" color={tintColor}/>
+            
+        }
+    }
+}, {
+    initialRouteName: 'HomeScreen'
+}
+);
+
+const ButtonsNav = createStackNavigator({
+    First: {
+        screen: TabNavigationButtons,
+        navigationOptions: ({ navigation }) => ({
+            headerLeft: () => <NavigationDrawerHeader navigationProps={navigation}/>,
+            headerStyle: {
+                backgroundColor: '#307ecc'
+            },
+            headerTintColor: '#fff'
+        })
+    }
+});
+
 const DrawerNavigationRoutes = createDrawerNavigator({
     HomeScreen: {
         screen: FirstActivity_StackNavigator,
@@ -48,10 +90,17 @@ const DrawerNavigationRoutes = createDrawerNavigator({
         navigationOptions: {
             drawerLabel: 'Setting Screen'
         }
+    },
+    TabNavigator: {
+        screen: ButtonsNav,
+        navigationOptions: {
+            drawerLabel: 'Autopartes'
+        }
     }
 },
 {
     contentComponent: CustomSidebarMenu,
+    initialRouteName: 'TabNavigator',
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',
     drawerToggleRoute: 'DrawerToggle'

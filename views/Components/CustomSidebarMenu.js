@@ -6,7 +6,10 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Users } from '../../src/api-handler/User';
 
 const CustomSidebarMenu = props => {
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    username: ''
+  });
   let items = [
     {
       navOptionName: 'Home Screen',
@@ -53,31 +56,34 @@ const CustomSidebarMenu = props => {
   };
 
   useEffect(() => {
-    //let data = await AsyncStorage.getItem('userInfo')//.then(value => value);
-   // const val = await AsyncStorage.multiGet(['id', 'tkn']);
+   let unmonted = true;
    AsyncStorage.getItem('userInfo').then(value => {
      let dataParse = JSON.parse(value);
      Users.getUserById(dataParse.id, dataParse.token)
        .then(response => {
-         const user = response.data
-         setUserInfo({
-           name: user.name,
-           username: user.username
-         });
+         if (unmonted) {
+           const user = response.data
+           setUserInfo({
+             name: user.name,
+             username: user.username
+           });
+         }
        })
        .catch(error => console.log(error.response));
    });
-  },[]);
+
+   return () => mounted = false;
+  }, []);
 
   return (
     <View style={stylesSidebar.sideMenuContainer}>
       <View style={stylesSidebar.profileHeader}>
         <View style={stylesSidebar.profileHeaderPicCircle}>
           <Text style={{ fontSize: 25, color: '#307ecc' }}>
-            {userInfo.name.charAt(0)}
+            { userInfo.name.charAt(0) }
           </Text>
         </View>
-        <Text style={stylesSidebar.profileHeaderText}>{userInfo.name}</Text>
+        <Text style={stylesSidebar.profileHeaderText}>Ivan</Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />
       <View style={{ width: '100%', flex: 1 }}>
