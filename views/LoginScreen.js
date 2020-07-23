@@ -38,7 +38,6 @@ const LoginScreen = props => {
             .then(response => response)
             .then(responseJson => {
                 setLoading(false);
-                console.log(responseJson);
                 if (responseJson.data.status === 'active') {
                     const token = responseJson.data.accessToken
                     const data = {

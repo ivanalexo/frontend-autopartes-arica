@@ -46,7 +46,7 @@ const TabNavigationButtons = createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Home',
             tabBarIcon: ({tintColor}) => 
-                <Icon name="home" color={tintColor}  />
+                <Icon name="cart" color={tintColor}  />
             
         }
     },
@@ -61,7 +61,7 @@ const TabNavigationButtons = createBottomTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'HomeScreen'
+    initialRouteName: 'SettingsScreen'
 }
 );
 
@@ -92,10 +92,7 @@ const DrawerNavigationRoutes = createDrawerNavigator({
         }
     },
     TabNavigator: {
-        screen: ButtonsNav,
-        navigationOptions: {
-            drawerLabel: 'Autopartes'
-        }
+        screen: ButtonsNav
     }
 },
 {

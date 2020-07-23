@@ -83,7 +83,7 @@ const CustomSidebarMenu = props => {
             { userInfo.name.charAt(0) }
           </Text>
         </View>
-        <Text style={stylesSidebar.profileHeaderText}>Ivan</Text>
+  <Text style={stylesSidebar.profileHeaderText}>{ userInfo.name }</Text>
       </View>
       <View style={stylesSidebar.profileHeaderLine} />
       <View style={{ width: '100%', flex: 1 }}>

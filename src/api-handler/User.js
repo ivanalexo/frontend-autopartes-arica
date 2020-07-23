@@ -30,10 +30,7 @@ export const Users = {
         });
     },
     getUserById: async (id, token) => {
-        /*const headers = {
-            Accept: 'application/json',
-            'x-access-token': token
-        }*/
+
         return await axios.get(`${user_endpoints}/${id}`, {
             headers: {
                 'x-access-token': token,
