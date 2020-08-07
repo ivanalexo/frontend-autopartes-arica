@@ -13,5 +13,12 @@ export const Products = {
                 Accept: 'application/json'
             }
         });
+    },
+    createProduct: async (data) => {
+        return await axios.post(product_endpoint, data, {
+            headers: {
+                Accept: 'application/json'
+            }
+        });
     }
 };
