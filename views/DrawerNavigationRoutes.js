@@ -6,13 +6,14 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import HomeScreen from './drawerScreens/HomeScreen';
 //import TabNavigationButtons from './drawerScreens/TabNavigation';
+import DetailsScreen from './drawerScreens/DetailsScreen';
 import SettingsScreen from './drawerScreens/SettingsScreen';
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import NavigationDrawerHeader from './Components/NavigationDrawerHeader';
 import Icon from 'react-native-ionicons';
 
 const FirstActivity_StackNavigator = createStackNavigator({
-    First: {
+    Home: {
         screen: HomeScreen,
         navigationOptions: ({ navigation }) => ({
             title: 'Home Screen',
@@ -26,7 +27,7 @@ const FirstActivity_StackNavigator = createStackNavigator({
 });
 
 const SecondActivity_StackNavigator = createStackNavigator({
-    First: {
+    Settings: {
         screen: SettingsScreen,
         navigationOptions: ({ navigation }) => ({
             title: 'Setting Screen',
@@ -39,6 +40,20 @@ const SecondActivity_StackNavigator = createStackNavigator({
     }
 });
 
+const ThirdActivity_StackNavigator = createStackNavigator({
+    Details: {
+        screen: DetailsScreen,
+        /*navigationOptions: ({ navigation }) => ({
+            title: 'Details Screen',
+            headerLeft: () => <NavigationDrawerHeader navigationProps={navigation} />,
+            headerStyle: {
+                backgroundColor: '#307ecc'
+            },
+            headerTintColor: '#fff'
+        })*/
+    }
+})
+
 
 const TabNavigationButtons = createBottomTabNavigator({
     HomeScreen: {
@@ -47,7 +62,6 @@ const TabNavigationButtons = createBottomTabNavigator({
             tabBarLabel: 'Home',
             tabBarIcon: ({tintColor}) => 
                 <Icon name="cart" color={tintColor}  />
-            
         }
     },
     SettingsScreen: {
@@ -61,12 +75,12 @@ const TabNavigationButtons = createBottomTabNavigator({
         }
     }
 }, {
-    initialRouteName: 'SettingsScreen'
+    initialRouteName: 'HomeScreen'
 }
 );
 
 const ButtonsNav = createStackNavigator({
-    First: {
+    Tab: {
         screen: TabNavigationButtons,
         navigationOptions: ({ navigation }) => ({
             headerLeft: () => <NavigationDrawerHeader navigationProps={navigation}/>,
@@ -75,7 +89,7 @@ const ButtonsNav = createStackNavigator({
             },
             headerTintColor: '#fff'
         })
-    }
+    },
 });
 
 const DrawerNavigationRoutes = createDrawerNavigator({
@@ -91,8 +105,17 @@ const DrawerNavigationRoutes = createDrawerNavigator({
             drawerLabel: 'Setting Screen'
         }
     },
+    DetailsScreen: {
+        screen: ThirdActivity_StackNavigator,
+        navigationOptions: {
+            drawerLabel: 'Details Screen'
+        }
+    },
     TabNavigator: {
-        screen: ButtonsNav
+        screen: ButtonsNav,
+        navigationOptions: {
+            header: null
+        }
     }
 },
 {

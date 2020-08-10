@@ -14,7 +14,8 @@ import {
   Icon,
   Left,
   Body,
-  Title
+  Title,
+  Right
 } from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import Loader from '../Components/Loader';
@@ -176,17 +177,35 @@ const HomeScreen = (props) => {
     return (
       <View key={productData.id}>
         <Card>
+          <CardItem>
+            <Left>
+              <Body>
+                <Text>{productData.name}</Text>
+                <Text note>{productData.model}</Text>
+              </Body>
+            </Left>
+          </CardItem>
           <CardItem cardBody>
-            {"image" in productData ? 
-            <Image source={{ uri: productData.image.src }} style={{ height: 200, width: null, flex: 1 }} />
-            :
-            <Image source={require('../../assets/images/addImage.png')} style={{ height: 200, width: null, flex: 1 }} />
-          }
+            
+              {"image" in productData ? 
+              <Image source={{ uri: productData.image.src }} style={{ height: 200, width: null, flex: 1 }} />
+              :
+              <Image source={require('../../assets/images/addImage.png')} style={{ height: 200, width: null, flex: 1 }} />
+            }
           </CardItem>
           <CardItem>
+            <Left>
+              <Text>Precio: $ {productData.price}</Text>
+            </Left>
             <Body>
-              <Text>{productData.name}</Text>
+              <Text>Cantidad: {productData.quantity}</Text>
             </Body>
+            <Right>
+              <Button
+                title={'Detalles'}
+                onPress={() => props.navigation.navigate('DetailsScreen',{}, { type: 'Navigate', routeName: 'Details', params: {itemId: productData.id}})}
+              />
+            </Right>
           </CardItem>
         </Card>
       </View>
