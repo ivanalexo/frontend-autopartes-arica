@@ -43,14 +43,14 @@ const SecondActivity_StackNavigator = createStackNavigator({
 const ThirdActivity_StackNavigator = createStackNavigator({
     Details: {
         screen: DetailsScreen,
-        /*navigationOptions: ({ navigation }) => ({
+        navigationOptions: ({ navigation }) => ({
             title: 'Details Screen',
             headerLeft: () => <NavigationDrawerHeader navigationProps={navigation} />,
             headerStyle: {
                 backgroundColor: '#307ecc'
             },
             headerTintColor: '#fff'
-        })*/
+        })
     }
 })
 

@@ -28,6 +28,7 @@ const HomeScreen = (props) => {
   let [data, setData] = useState([]);
   let [loading, setLoading] = useState(false);
   let [isRegistraionSuccess, setRegistrationSuccess] = useState(false);
+  let [isData, setIsData] = useState(false);
   let [errorText, setErrorText] = useState('');
   let [visible, setVisible] = useState(false)
   let [model, setModel] = useState('');
@@ -41,6 +42,7 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     setLoading(true);
+    setIsData(true);
     Products.getProduct()
       .then(response => response)
       .then(responseJson => {
@@ -48,6 +50,7 @@ const HomeScreen = (props) => {
         setLoading(false)
       })
       .catch(error => {
+        setIsData(false)
         console.log(error.response);
       });
 
@@ -173,6 +176,13 @@ const HomeScreen = (props) => {
       </View>
     );
   }
+  if (!isData) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', marginHorizontal: 30 }}>
+        <Text>No hay productos disponibles, registre uno</Text>
+      </View>
+    )
+  }
   let display = data.map(function (productData, index) {
     return (
       <View key={productData.id}>
@@ -203,7 +213,7 @@ const HomeScreen = (props) => {
             <Right>
               <Button
                 title={'Detalles'}
-                onPress={() => props.navigation.navigate('DetailsScreen',{}, { type: 'Navigate', routeName: 'Details', params: {itemId: productData.id}})}
+                onPress={() => props.navigation.navigate('Details', {itemId: productData.id})}
               />
             </Right>
           </CardItem>

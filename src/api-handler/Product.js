@@ -20,5 +20,12 @@ export const Products = {
                 Accept: 'application/json'
             }
         });
+    },
+    getProductById: async (id) => {
+        return await axios.get(`${product_endpoint}/${id}`, {
+            headers: {
+                Accept: 'application/json'
+            }
+        });
     }
 };
