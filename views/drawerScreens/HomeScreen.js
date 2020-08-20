@@ -240,13 +240,11 @@ const HomeScreen = (props) => {
                 <TextInput
                   style={styles.inputStyle}
                   onChangeText={code => setCode(code)}
-                  autoFocus={true}
-                  underlineColorAndroid={'white'}
-                  placeholderTextColor={'white'}
-                  placeholder={'Código'}
-                  autoCapitalize={'none'}
-                  keyboardType={'default'}
-                  returnKeyType={'next'}
+                  underlineColorAndroid='#FFF'
+                  placeholderTextColor='#FFF'
+                  placeholder='Código'
+                  autoCapitalize='sentences'
+                  returnKeyType='next'
                   onSubmitEditing={() => {
                     this._nameInput && this._nameInput.focus();
                   }}
@@ -257,13 +255,15 @@ const HomeScreen = (props) => {
                 <TextInput
                   style={styles.inputStyle}
                   onChangeText={name => setName(name)}
-                  autoFocus={true}
-                  underlineColorAndroid={'white'}
-                  placeholderTextColor={'white'}
-                  placeholder={'Nombre'}
+                  underlineColorAndroid='#FFF'
+                  placeholderTextColor='#FFF'
+                  placeholder='Nombre'
                   autoCapitalize={'none'}
-                  keyboardType={'default'}
+                  keyboardType='default'
                   returnKeyType={'next'}
+                  ref={ref => {
+                    this._nameInput = ref;
+                  }}
                   onSubmitEditing={() => {
                     this._modelInput && this._modelInput.focus();
                   }}
@@ -274,13 +274,15 @@ const HomeScreen = (props) => {
                 <TextInput
                   style={styles.inputStyle}
                   onChangeText={model => setModel(model)}
-                  autoFocus={true}
                   underlineColorAndroid={'white'}
                   placeholderTextColor={'white'}
                   placeholder={'Modelo'}
                   autoCapitalize={'none'}
                   keyboardType={'default'}
                   returnKeyType={'next'}
+                  ref={ref=> {
+                    this._modelInput = ref
+                  }}
                   onSubmitEditing={() => {
                     this._descriptionInput && this._descriptionInput.focus();
                   }}
@@ -291,13 +293,15 @@ const HomeScreen = (props) => {
                 <TextInput
                   style={styles.inputStyle}
                   onChangeText={description => setDescription(description)}
-                  autoFocus={true}
                   underlineColorAndroid={'white'}
                   placeholderTextColor={'white'}
                   autoCapitalize={'none'}
                   placeholder={'Descripción'}
                   keyboardType={'default'}
                   returnKeyType={'next'}
+                  ref={ref=> {
+                    this._descriptionInput = ref
+                  }}
                   onSubmitEditing={() => {
                     this._quantityInput && this._quantityInput.focus();
                   }}
@@ -308,13 +312,15 @@ const HomeScreen = (props) => {
                 <TextInput
                   style={styles.inputStyle}
                   onChangeText={quantity => setQuantity(quantity)}
-                  autoFocus={true}
                   underlineColorAndroid={'white'}
                   placeholderTextColor={'white'}
                   placeholder={'Cantidad'}
                   autoCapitalize={'none'}
                   keyboardType={'numeric'}
                   returnKeyType={'next'}
+                  ref={ref=> {
+                    this._quantityInput = ref
+                  }}
                   onSubmitEditing={() => {
                     this._priceInput && this._priceInput.focus();
                   }}
@@ -325,11 +331,13 @@ const HomeScreen = (props) => {
                 <TextInput
                   style={styles.inputStyle}
                   onChangeText={price => setPrice(price)}
-                  autoFocus={true}
                   underlineColorAndroid={'white'}
                   placeholderTextColor={'white'}
                   placeholder={'Precio'}
                   autoCapitalize={'none'}
+                  ref={ref => {
+                    this._priceInput = ref
+                  }}
                   keyboardType={'numbers-and-punctuation'}
                   blurOnSubmit={false}
                 />

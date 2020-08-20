@@ -27,5 +27,12 @@ export const Products = {
                 Accept: 'application/json'
             }
         });
+    },
+    deleteProduct: async (id) => {
+        return await axios.delete(`${product_endpoint}/${id}`, {
+            headers: {
+                Accept: 'application/json'
+            }
+        });
     }
 };
