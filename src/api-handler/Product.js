@@ -34,5 +34,12 @@ export const Products = {
                 Accept: 'application/json'
             }
         });
+    },
+    updateProduct: async (id, data) => {
+        return await axios.put(`${product_endpoint}/${id}`, data, {
+            headers: {
+                Accept: 'application/json'
+            }
+        })
     }
 };

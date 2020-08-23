@@ -61,7 +61,7 @@ const HomeScreen = (props) => {
       title: 'Seleccionar Image',
       base64: true
     };
-    ImagePicker.launchImageLibrary(options, async response => {
+    ImagePicker.showImagePicker(options, async response => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
