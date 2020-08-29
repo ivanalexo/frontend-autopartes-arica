@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { View, Text, Image, StyleSheet, ToastAndroid, Button, TouchableOpacity, Alert, Modal, ScrollView, TextInput } from 'react-native';
 import Icon from 'react-native-ionicons';
 import { Products } from '../../src/api-handler/Product';
+import { Sale } from '../../src/api-handler/Sales';
 import { ImageUpload } from '../../src/api-handler/Image';
 import ImagePicker from 'react-native-image-picker';
 import Loader from '../Components/Loader';
@@ -21,10 +22,11 @@ const DetailsScreen = ({ navigation }) => {
   let [data, setData] = useState([]);
   let [loading, setLoading] = useState(false);
   let [errorText, setErrorText] = useState('');
-  let [visible, setVisible] = useState(false)
-  let [model, setModel] = useState('');
-  let [code, setCode] = useState('');
-  let [name, setName] = useState('');
+  let [visible, setVisible] = useState(false);
+  let [visibleSaleModal, setVisibleSaleModal] = useState(false);
+  let [client, setClient] = useState('');
+  let [quantity, setQuantity] = useState('');
+  let [dataQuantity, setDataQuantity] = useState('');
   let [image, setImage] = useState('');
   let [cloudinaryImage, setCloudinaryImage] = useState({});
   let [isImageUpdated, setImageUpdated] = useState(false);
@@ -37,13 +39,13 @@ const DetailsScreen = ({ navigation }) => {
       .then(response => response)
       .then(responseJson => {
         setData(responseJson.data);
+        setDataQuantity(data.quantity);
         setLoading(false);
       })
       .catch(error => {
         console.log(error.response);
       });
     }, [productId]);
-    
   const resetData = prevData(data);
   const selectImage = () => {
     const options = {
@@ -87,6 +89,49 @@ const DetailsScreen = ({ navigation }) => {
     .catch(error => {
       console.log(error.response)
     })
+  }
+
+  const handleSubmitSale = () => {
+    setErrorText('');
+    if (!client) {
+      alert('Ingrese el cliente');
+      return;
+    }
+    if (!quantity) {
+      alert('Ingrese la cantidad');
+      return;
+    }
+
+    if (dataQuantity < quantity ) {
+      alert(`Error: la cantidad disponible es de: ${dataQuantity}`);
+      return;
+    }
+
+    let data = {
+      client: client,
+      product: productId,
+      quantity: quantity
+    }
+    setLoading(true);
+    Sale.saleProduct(data)
+      .then(response => response)
+      .then(responseJson => {
+        setLoading(false);
+        ToastAndroid.showWithGravity(
+          'Venta realizada exitosamente',
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM
+        )
+      })
+      .catch(error => {
+        setLoading(false)
+        ToastAndroid.showWithGravity(
+          error.response.data.message,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM
+        )
+        return;
+      })
   }
 
   const handleSubmitUpdate = () => {
@@ -138,6 +183,10 @@ const DetailsScreen = ({ navigation }) => {
     setVisible(show);
   }
 
+  const displaySaleModal = (show) => {
+    setVisibleSaleModal(show);
+  }
+
   const handleDelete = () => {
     Alert.alert(
       'Eliminar',
@@ -178,10 +227,72 @@ const DetailsScreen = ({ navigation }) => {
           <Modal
             animationType={'slide'}
             transparent={true}
+            visible={visibleSaleModal}
+            onRequestClose={() => {
+              displaySaleModal(false);
+            }}
+          >
+            <View style={styles.modalContainer}>
+              <Text style={styles.formLabel}>Vender Producto</Text>
+              <View style={styles.SectionStyle}>
+              <TextInput
+                  style={styles.inputStyle}
+                  name={'client'}
+                  placeholder="Cliente"
+                  onChangeText={client => setClient(client)}
+                  underlineColorAndroid='#FFF'
+                  placeholderTextColor='#FFF'
+                  autoCapitalize='sentences'
+                  returnKeyType='next'
+                  onSubmitEditing={() => {
+                    this._quantityInput && this._quantityInput.focus();
+                  }}
+                  blurOnSubmit={false}
+                />
+                </View>
+                <View style={styles.SectionStyle}>
+                <TextInput
+                  style={styles.inputStyle}
+                  onChangeText={quantity => setQuantity(quantity)}
+                  name='quantity'
+                  placeholder="Cantidad"
+                  underlineColorAndroid={'white'}
+                  placeholderTextColor={'white'}
+                  autoCapitalize={'none'}
+                  keyboardType={'numeric'}
+                  returnKeyType={'next'}
+                  ref={ref=> {
+                    this._quantityInput = ref
+                  }}
+                  blurOnSubmit={false}
+                />                  
+                </View>
+                <View style={styles.buttonActions}>
+                <Button
+                  onPress={() => {
+                    navigation.navigate('Details', {itemId: productId});
+                    displaySaleModal(false);
+                  }}
+                  title='Cerrar'
+                />
+                <Button
+                  onPress={() => {
+                    handleSubmitSale();
+                    displaySaleModal(false);
+                    navigation.navigate('Details',{itemId: productId});
+                  }}
+                  title='Vender'
+                />
+              </View>                
+              </View>
+          </Modal>
+          <Modal
+            animationType={'slide'}
+            transparent={true}
             visible={visible}
             onRequestClose={() => {
               setData(resetData);
-              displayModal(false);
+              displaySaleModal(false);
             }}
           >
             <View style={styles.modalContainer}>
@@ -319,7 +430,6 @@ const DetailsScreen = ({ navigation }) => {
                   title='Cerrar'
                 />
                 <Button
-                  //disabled={this.state.isEnabled}
                   onPress={() => {
                     handleSubmitUpdate();
                     ToastAndroid.showWithGravity(
@@ -343,10 +453,13 @@ const DetailsScreen = ({ navigation }) => {
         <Image source={require('../../assets/images/addImage.png')} style={styles.imageProduct} />
       }
       <Text style={styles.name}>{data.name}</Text>
-      <Text style={styles.price}> {data.model}</Text>
-      <Text style={styles.description}>{data.description}</Text>
+      <Text style={styles.price}>Modelo: {data.model}</Text>
+      <Text style={styles.description}>Descripción: {data.description}</Text>
+      <Text style={styles.quantity}>Cantidad disponible: {data.quantity}</Text>
       <View style={styles.buttonActions}>
-        <TouchableOpacity style={styles.buttonSell}>
+        <TouchableOpacity style={styles.buttonSell}
+        onPress={() => { displaySaleModal(true)}}
+        >
           <Icon name="cart">
             <Text style={styles.textButtons}>Vender</Text>
           </Icon>
@@ -446,6 +559,11 @@ const styles = StyleSheet.create({
     marginTop:10,
     color:"#696969",
   },
+  quantity:{
+    textAlign:'center',
+    marginTop:10,
+    color:"#696969",
+  },
   buttonActions: {
     flexDirection: 'row',
     paddingTop: 10,
@@ -493,4 +611,4 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'relative'
   }
-})
+});
