@@ -43,16 +43,19 @@ const HomeScreen = (props) => {
   useEffect(() => {
     setLoading(true);
     setIsData(true);
-    Products.getProduct()
-      .then(response => response)
-      .then(responseJson => {
-        setData(responseJson.data)
-        setLoading(false)
-      })
-      .catch(error => {
-        setIsData(false)
-        console.log(error.response);
-      });
+    AsyncStorage.getItem('userInfo').then(value => {
+      let dataParse = JSON.parse(value);
+      Products.getProduct(dataParse.token)
+        .then(response => response)
+        .then(responseJson => {
+          setData(responseJson.data)
+          setLoading(false)
+        })
+        .catch(error => {
+          setIsData(false)
+          console.log(error.response);
+        });
+    })
 
   }, []);
 
@@ -80,13 +83,17 @@ const HomeScreen = (props) => {
   }
 
   const createProduct = async (data) => {
-    Products.createProduct(data)
-    .then(response => {
-      setLoading(false);
-      isRegistraionSuccess(true);
-    })
-    .catch(error => {
-      console.log(error.response)
+    AsyncStorage.getItem('userInfo').then(value => {
+      let dataParse = JSON.parse(value);
+      Products.createProduct(data, dataParse.token)
+      .then(response => {
+        setLoading(false);
+        isRegistraionSuccess(true);
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error.response)
+      });
     })
   }
   const handleSubmitCreate = () => {

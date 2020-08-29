@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 //Import all required component
 import { View, Text, Image, StyleSheet, ToastAndroid, Button, TouchableOpacity, Alert, Modal, ScrollView, TextInput } from 'react-native';
 import Icon from 'react-native-ionicons';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Products } from '../../src/api-handler/Product';
 import { Sale } from '../../src/api-handler/Sales';
 import { ImageUpload } from '../../src/api-handler/Image';
@@ -35,16 +36,20 @@ const DetailsScreen = ({ navigation }) => {
   
   useEffect(() => {
     setLoading(true);
-    Products.getProductById(productId)
-      .then(response => response)
-      .then(responseJson => {
-        setData(responseJson.data);
-        setDataQuantity(data.quantity);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
+    AsyncStorage.getItem('userInfo').then(value => {
+      let dataParse = JSON.parse(value);
+      Products.getProductById(productId, dataParse.token)
+        .then(response => response)
+        .then(responseJson => {
+          setData(responseJson.data);
+          setDataQuantity(data.quantity);
+          setLoading(false);
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log(error.response);
+        });
+    })
     }, [productId]);
   const resetData = prevData(data);
   const selectImage = () => {
@@ -81,13 +86,17 @@ const DetailsScreen = ({ navigation }) => {
   }
 
   const updateProduct = (data) => {
-    Products.updateProduct(productId ,data)
-    .then(response => response)
-    .then(responseJson => {
-      setLoading(false);
-    })
-    .catch(error => {
-      console.log(error.response)
+    AsyncStorage.getItem('userInfo').then(value => {
+      let dataParse = JSON.parse(value);
+      Products.updateProduct(productId ,data, dataParse.token)
+      .then(response => response)
+      .then(responseJson => {
+        setLoading(false);
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error.response)
+      })
     })
   }
 
@@ -210,17 +219,20 @@ const DetailsScreen = ({ navigation }) => {
   }
   const deleteProduct = () => {
     setLoading(true);
-    Products.deleteProduct(productId)
-      .then(response => response)
-      .then(responseJson => {
-        setLoading(false);
-        ToastAndroid.showWithGravity(
-          'Producto eliminado exitosamente',
-          ToastAndroid.LONG,
-          ToastAndroid.BOTTOM
-          );
-          navigation.navigate('HomeScreen');
-      });
+    AsyncStorage.getItem('userInfo').then(value => {
+      let dataParse = JSON.parse(value);
+      Products.deleteProduct(productId, dataParse.token)
+        .then(response => response)
+        .then(responseJson => {
+          setLoading(false);
+          ToastAndroid.showWithGravity(
+            'Producto eliminado exitosamente',
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM
+            );
+            navigation.navigate('HomeScreen');
+        });
+    });
   }
   return (
     <View style={{ flex: 1, alignItems: 'center', marginHorizontal: 30 }}>

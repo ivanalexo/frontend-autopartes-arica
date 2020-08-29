@@ -7,37 +7,42 @@ const product_endpoint = `${
 }/api/products`;
 
 export const Products = {
-    getProduct: async () => {
+    getProduct: async (token) => {
         return await axios.get(product_endpoint, {
             headers: {
+                'x-access-token': token,
                 Accept: 'application/json'
             }
         });
     },
-    createProduct: async (data) => {
+    createProduct: async (data, token) => {
         return await axios.post(product_endpoint, data, {
             headers: {
+                'x-access-token': token,
                 Accept: 'application/json'
             }
         });
     },
-    getProductById: async (id) => {
+    getProductById: async (id, token) => {
         return await axios.get(`${product_endpoint}/${id}`, {
             headers: {
+                'x-access-token': token,
                 Accept: 'application/json'
             }
         });
     },
-    deleteProduct: async (id) => {
+    deleteProduct: async (id, token) => {
         return await axios.delete(`${product_endpoint}/${id}`, {
             headers: {
+                'x-access-token': token,
                 Accept: 'application/json'
             }
         });
     },
-    updateProduct: async (id, data) => {
+    updateProduct: async (id, data, token) => {
         return await axios.put(`${product_endpoint}/${id}`, data, {
             headers: {
+                'x-access-token': token,
                 Accept: 'application/json'
             }
         })
