@@ -37,5 +37,12 @@ export const Users = {
                 Accept: 'application/json'
             }
         });
+    },
+    getUsers: async () => {
+        return await axios.get(user_endpoints, {
+            headers: {
+                Accept: 'application/json'
+            }
+        });
     }
 }
