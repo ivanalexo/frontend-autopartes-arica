@@ -21,7 +21,7 @@ export const Users = {
             headers: headers
         });
     },
-    login: async (body) => {
+    login: async (body) =>  {
         const headers = {
             Accept: 'application/json'
         };

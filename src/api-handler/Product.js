@@ -36,7 +36,7 @@ export const Products = {
             headers: {
                 'x-access-token': token,
                 Accept: 'application/json'
-            }
+            }   
         });
     },
     updateProduct: async (id, data, token) => {

@@ -8,6 +8,7 @@ import HomeScreen from './drawerScreens/HomeScreen';
 //import TabNavigationButtons from './drawerScreens/TabNavigation';
 import DetailsScreen from './drawerScreens/DetailsScreen';
 import SettingsScreen from './drawerScreens/SettingsScreen';
+import InformeScreen from './drawerScreens/InformeScreen'
 import CustomSidebarMenu from './Components/CustomSidebarMenu';
 import NavigationDrawerHeader from './Components/NavigationDrawerHeader';
 import Icon from 'react-native-ionicons';
@@ -54,12 +55,26 @@ const ThirdActivity_StackNavigator = createStackNavigator({
     }
 })
 
+const FourthActivity_StackNavigator = createStackNavigator({
+    Informe: {
+        screen: InformeScreen,
+        navigationOptions: ({ navigation }) => ({
+            title: 'Informe Screen',
+            headerLeft: () => <NavigationDrawerHeader navigationProps={navigation} />,
+            headerStyle: {
+                backgroundColor: '#307ecc'
+            },
+            headerTintColor: '#fff'
+        })
+    }
+})
+
 
 const TabNavigationButtons = createBottomTabNavigator({
     HomeScreen: {
         screen: FirstActivity_StackNavigator,
         navigationOptions: {
-            tabBarLabel: 'Home',
+            tabBarLabel: 'Productos',
             tabBarIcon: ({tintColor}) => 
                 <Icon name="cart" color={tintColor}  />
         }
@@ -68,9 +83,19 @@ const TabNavigationButtons = createBottomTabNavigator({
         screen: SecondActivity_StackNavigator,
         navigationOptions: {
             title: 'Settings',
-            tabBarLabel: 'Settings',
+            tabBarLabel: 'Personal',
             tabBarIcon: ({tintColor}) => 
                 <Icon name="person" color={tintColor}/>
+            
+        }
+    },
+    InformeScreen: {
+        screen: FourthActivity_StackNavigator,
+        navigationOptions: {
+            title: 'Informe',
+            tabBarLabel: 'Informe',
+            tabBarIcon: ({tintColor}) => 
+                <Icon name="book" color={tintColor}/>
             
         }
     }
@@ -109,6 +134,12 @@ const DrawerNavigationRoutes = createDrawerNavigator({
         screen: ThirdActivity_StackNavigator,
         navigationOptions: {
             drawerLabel: 'Details Screen'
+        }
+    },
+    InformeScreen: {
+        screen: FourthActivity_StackNavigator,
+        navigationOptions: {
+            drawerLabel: 'Informe Screen'
         }
     },
     TabNavigator: {

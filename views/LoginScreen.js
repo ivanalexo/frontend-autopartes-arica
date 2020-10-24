@@ -33,7 +33,7 @@ const LoginScreen = props => {
         }
         setLoading(true);
         var dataToSend = { username: username, password: userPassword };
-        
+
         Users.login(dataToSend)
             .then(response => response)
             .then(responseJson => {
@@ -58,74 +58,86 @@ const LoginScreen = props => {
             });
     };
 
-    return (
-        <View style={styles.mainBody}>
-            <Loader loading={loading} />
-            <ScrollView keyboardShouldPersistTaps='handled'>
-                <View style={{ marginTop: 100 }}>
-                    <KeyboardAvoidingView enabled>
-                        <View style={{ alignItems: 'center' }}>
-                            <Image 
-                                source={require('../assets/images/autoPartesArica.png')}
-                                style={{
-                                    width: '70%',
-                                    height: 120,
-                                    resizeMode: 'contain',
-                                    margin: 30
-                                }}
-                            />
-                        </View>
-                        <View style={styles.SectionStyle}>
-                            <TextInput 
-                                style={styles.inputStyle}
-                                onChangeText={username => setUsername(username)}
-                                underlineColorAndroid='#ffffff'
-                                placeholder='Usuario'
-                                placeholderTextColor='#f6f6f7'
-                                autoCapitalize='none'
-                                keyboardType='default'
-                                
-                                returnKeyType='next'
-                                onSubmitEditing={() => 
-                                    this._passwordInput && this._passwordInput.focus()
-                                }
-                                blurOnSubmit={false}
-                            />
-                        </View>
-                        <View style={styles.SectionStyle}>
-                            <TextInput
-                                style={styles.inputStyle}
-                                onChangeText={userPassword => setUserPassword(userPassword)}
-                                underlineColorAndroid='#ffffff'
-                                placeholder='Contraseña'
-                                placeholderTextColor='#f6f6f7'
-                                keyboardType='default'
-                                ref={ref => {
-                                    this._passwordInput = ref;
-                                }}
-                                onSubmitEditing={Keyboard.dismiss}
-                                blurOnSubmit={false}
-                                secureTextEntry={true}
-                            />
-                        </View> 
-                        {errorText != '' ? (
-                            <Text style={styles.errorTextStyle}> {errorText} </Text>
-                        ): null }
-                        <TouchableOpacity
-                            style={styles.buttonStyle}
-                            activeOpacity={0.5}
-                            onPress={handleSubmitPress}>
-                            <Text style={styles.buttonTextStyle}>Login</Text>
-                        </TouchableOpacity>
-                        <Text
-                            style={styles.registerTextStyle}
-                            onPress={() => props.navigation.navigate('RegisterScreen')}>
-                                ¿No tiene cuenta? Registrate
-                        </Text>
-                    </KeyboardAvoidingView>
-                </View>
-            </ScrollView>
-        </View>
+    return ( <
+        View style = { styles.mainBody } >
+        <
+        Loader loading = { loading }
+        /> <
+        ScrollView keyboardShouldPersistTaps = 'handled' >
+        <
+        View style = {
+            { marginTop: 100 } } >
+        < 
+        KeyboardAvoidingView enabled >
+        <
+        View style = {
+            { alignItems: 'center' } } >
+        <
+        Image source = { require('../assets/images/autoPartesArica.png') }
+        style = {
+            {
+                width: '70%',
+                height: 120,
+                resizeMode: 'contain',
+                margin: 30
+            }
+        }
+        /> <
+        /View> <
+        View style = { styles.SectionStyle } >
+        <
+        TextInput style = { styles.inputStyle }
+        onChangeText = { username => setUsername(username) }
+        underlineColorAndroid = '#ffffff'
+        placeholder = 'Usuario'
+        placeholderTextColor = '#f6f6f7'
+        autoCapitalize = 'none'
+        keyboardType = 'default'
+
+        returnKeyType = 'next'
+        onSubmitEditing = {
+            () =>
+            this._passwordInput && this._passwordInput.focus()
+        }
+        blurOnSubmit = { false }
+        /> <
+        /View> <
+        View style = { styles.SectionStyle } >
+        <
+        TextInput style = { styles.inputStyle }
+        onChangeText = { userPassword => setUserPassword(userPassword) }
+        underlineColorAndroid = '#ffffff'
+        placeholder = 'Contraseña'
+        placeholderTextColor = '#f6f6f7'
+        keyboardType = 'default'
+        ref = {
+            ref => {
+                this._passwordInput = ref;
+            }
+        }
+        onSubmitEditing = { Keyboard.dismiss }
+        blurOnSubmit = { false }
+        secureTextEntry = { true }
+        /> <
+        /View>  {
+            errorText != '' ? ( <
+                Text style = { styles.errorTextStyle } > { errorText } < /Text>
+            ) : null
+        } <
+        TouchableOpacity style = { styles.buttonStyle }
+        activeOpacity = { 0.5 }
+        onPress = { handleSubmitPress } >
+        <
+        Text style = { styles.buttonTextStyle } > Login < /Text> <
+        /TouchableOpacity> <
+        Text style = { styles.registerTextStyle }
+        onPress = {
+            () => props.navigation.navigate('RegisterScreen') } > ¿No tiene cuenta ? Registrate <
+        /Text> <
+        /KeyboardAvoidingView> <
+        /View> <
+        /ScrollView> <
+        /View>
     );
 };
 
@@ -133,7 +145,7 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
     mainBody: {
-        flex:1,
+        flex: 1,
         justifyContent: 'center',
         backgroundColor: '#29434e'
     },
