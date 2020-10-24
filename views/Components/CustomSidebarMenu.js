@@ -12,15 +12,19 @@ const CustomSidebarMenu = props => {
   });
   let items = [
     {
-      navOptionName: 'Home Screen',
+      navOptionName: 'Poductos',
       screenToNavigate: 'HomeScreen',
     },
     {
-      navOptionName: 'Setting Screen',
+      navOptionName: 'Personal',
       screenToNavigate: 'SettingsScreen',
     },
     {
-      navOptionName: 'Logout',
+      navOptionName:'Informe',
+      screenToNavigate:'InformeScreen',
+    },
+    {
+      navOptionName: 'Cerrar sesion',
       screenToNavigate: 'logout',
     },
   ];

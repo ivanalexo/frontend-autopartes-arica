@@ -14,6 +14,7 @@ import SplashScreen from './views/SplashScreen';
 import LoginScreen from './views/LoginScreen';
 import RegisterScreen from './views/RegisterScreen';
 import DrawerNavigationRoutes from './views/DrawerNavigationRoutes';
+//import InformeScreen from './views/DrawerScreens/InformeScreen';
 
 const Auth = createStackNavigator({
   LoginScreen: {
